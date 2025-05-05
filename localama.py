@@ -31,3 +31,14 @@ chain=prompt|llm|output_parser
 
 if input_text:
     st.write(chain.invoke({"question":input_text}))
+
+
+
+import os
+port = os.environ.get("PORT", 8501)
+
+if __name__ == "__main__":
+    import streamlit.web.cli as stcli
+    import sys
+    sys.argv = ["streamlit", "run", "localama.py", "--server.port", str(port)]
+    sys.exit(stcli.main())
