@@ -31,10 +31,3 @@ chain = prompt | llm | output_parser
 if input_text:
     st.write(chain.invoke({"question": input_text}))
 
-# Render-compatible startup block
-if __name__ == "__main__":
-    import streamlit.web.cli as stcli
-    import sys
-    port = os.environ.get("PORT", 8501)
-    sys.argv = ["streamlit", "run", "localama.py", "--server.port", str(port)]
-    sys.exit(stcli.main())
