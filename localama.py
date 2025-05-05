@@ -8,29 +8,33 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-os.environ["LANGCHAIN_TRACING_V2"]="true"
-os.environ["LANGCHAIN_API_KEY"]=os.getenv("LANGCHAIN_API_KEY")
+os.environ["LANGCHAIN_TRACING_V2"] = "true"
+os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
 
-## Prompt Template
-
-prompt=ChatPromptTemplate.from_messages(
+# Prompt Template
+prompt = ChatPromptTemplate.from_messages(
     [
-        ("system","You are a helpful assistant. Please response to the user queries"),
-        ("user","Question:{question}")
+        ("system", "You are a helpful assistant. Please response to the user queries"),
+        ("user", "Question:{question}")
     ]
 )
-## streamlit framework
 
+# Streamlit UI
 st.title('CHATBOT With LLAMA2')
-input_text=st.text_input("Search the topic u want")
+input_text = st.text_input("Search the topic u want")
 
-# ollama LLAma2 LLm 
-llm=Ollama(model="llama2")
-output_parser=StrOutputParser()
-chain=prompt|llm|output_parser
+# LLM Setup
+llm = Ollama(model="llama2")
+output_parser = StrOutputParser()
+chain = prompt | llm | output_parser
 
 if input_text:
-    st.write(chain.invoke({"question":input_text}))
+    st.write(chain.invoke({"question": input_text}))
 
-
-
+# Render-compatible startup block
+if __name__ == "__main__":
+    import streamlit.web.cli as stcli
+    import sys
+    port = os.environ.get("PORT", 8501)
+    sys.argv = ["streamlit", "run", "localama.py", "--server.port", str(port)]
+    sys.exit(stcli.main())
